@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Check, Smartphone, Tv, MessageSquare, Globe, Zap, SlidersHorizontal } from 'lucide-react'
-import { Badge, Button, Card, CardHeader, Field, Kpi, PageHeader, cx, inputCls, money } from '../components/ui'
+import { Check, Smartphone, Tv, MessageSquare, Zap, SlidersHorizontal, Network } from 'lucide-react'
+import { Badge, Button, Card, CardHeader, Field, Kpi, PageHeader, Toggle, cx, inputCls, money } from '../components/ui'
 
 const steps = ['Objective', 'Buying mode', 'Products', 'Audience', 'Budget & schedule', 'Creative', 'Review']
 const objectives = [['Sales', 'Drive purchases and ROAS'], ['Awareness', 'Reach as many relevant shoppers as possible'], ['Traffic', 'Send shoppers to your store'], ['Product launch', 'Introduce new arrivals'], ['Clearance', 'Move excess inventory']]
-const placements = [{ id: 'lock', name: 'Mobile Lockscreen', Icon: Smartphone, cpm: 9.2, cpc: 0.46 }, { id: 'tv', name: 'TV Ambient Screensaver', Icon: Tv, cpm: 12.5, cpc: 0.95 }, { id: 'agent', name: 'Agent Search & Chat (sponsored)', Icon: MessageSquare, cpm: 14.8, cpc: 0.72 }, { id: 'dsp', name: '3P Open Web (DSP)', Icon: Globe, cpm: 6.4, cpc: 0.55 }]
+const placements = [{ id: 'lock', name: 'Mobile Lockscreen', Icon: Smartphone, cpm: 9.2, cpc: 0.46 }, { id: 'tv', name: 'TV Ambient Screensaver', Icon: Tv, cpm: 12.5, cpc: 0.95 }, { id: 'agent', name: 'Agent Search & Chat (sponsored)', Icon: MessageSquare, cpm: 14.8, cpc: 0.72 }]
 
 export function CampaignWizard() {
   const [step, setStep] = useState(0)
@@ -16,13 +16,14 @@ export function CampaignWizard() {
   const [budget, setBudget] = useState(6000)
   const [roas, setRoas] = useState(3.5)
   const [prod, setProd] = useState('Collection: Autumn Trail')
+  const [extend, setExtend] = useState(false)
   const [done, setDone] = useState(false)
   const [preview, setPreview] = useState<'lock' | 'tv' | 'agent'>('lock')
 
-  const mult = mode === 'smart' ? 1.12 : 1
+  const mult = mode === 'smart' ? (extend ? 1.34 : 1.12) : 1
   const impr = Math.round(((budget / 10) * 1000) * mult)
   const clicks = Math.round(impr * 0.034)
-  const rev = Math.round(budget * (mode === 'smart' ? roas : 3.0 + places.length * 0.12))
+  const rev = Math.round(budget * (mode === 'smart' ? roas * (extend ? 1.04 : 1) : 3.0 + places.length * 0.12))
 
   if (done)
     return (
@@ -43,7 +44,7 @@ export function CampaignWizard() {
             <>
               <CardHeader title="How do you want to buy?" />
               <div className="grid gap-4 md:grid-cols-2">
-                <button onClick={() => setMode('smart')} className={cx('rounded-xl border p-5 text-left', mode === 'smart' ? 'border-brand-600 bg-brand-50' : 'border-slate-200')}><Zap className="mb-2 text-brand-600" /><p className="font-semibold">SmartAds <Badge tone="violet">Recommended</Badge></p><p className="mt-1 text-sm text-slate-500">Set a budget and target ROAS. Lumio picks surfaces, bids and audiences automatically.</p></button>
+                <button onClick={() => setMode('smart')} className={cx('rounded-xl border p-5 text-left', mode === 'smart' ? 'border-brand-600 bg-brand-50' : 'border-slate-200')}><Zap className="mb-2 text-brand-600" /><p className="font-semibold">SmartAds <Badge tone="violet">Recommended</Badge></p><p className="mt-1 text-sm text-slate-500">Set a budget and target ROAS. Glance picks surfaces, bids and audiences automatically.</p></button>
                 <button onClick={() => setMode('manual')} className={cx('rounded-xl border p-5 text-left', mode === 'manual' ? 'border-brand-600 bg-brand-50' : 'border-slate-200')}><SlidersHorizontal className="mb-2 text-brand-600" /><p className="font-semibold">Manual</p><p className="mt-1 text-sm text-slate-500">Choose placements and pay per 1,000 impressions (CPM) or per click (CPC).</p></button>
               </div>
               {mode === 'manual' && (
@@ -54,7 +55,22 @@ export function CampaignWizard() {
                   ))}</div>
                 </div>
               )}
-              {mode === 'smart' && <div className="mt-5 rounded-xl bg-violet-50 p-4 text-sm text-violet-900">SmartAds will allocate across Lockscreen, TV, agent search and 3P based on live conversion data and shift budget to what works.</div>}
+              {mode === 'smart' && (
+                <div className="mt-5 space-y-3">
+                  <div className="rounded-xl bg-violet-50 p-4 text-sm text-violet-900">SmartAds will allocate across Lockscreen, TV and agent search based on live conversion data, and shift budget to what works.</div>
+                  <div className={cx('rounded-xl border p-4', extend ? 'border-brand-600 bg-brand-50' : 'border-slate-200')}>
+                    <div className="flex items-start gap-3">
+                      <Network className="mt-0.5 shrink-0 text-brand-600" size={20} />
+                      <div className="flex-1">
+                        <p className="font-semibold text-slate-900">Extend audience to other networks <Badge tone="green">+22% reach</Badge></p>
+                        <p className="mt-1 text-sm text-slate-500">Also reach your site visitors, cart abandoners and lookalikes of your best customers on partner networks beyond Glance. Placement, frequency and bidding are handled automatically.</p>
+                        {extend && <p className="mt-2 text-xs text-slate-500">Uses your pixel audiences and brand-safe partner inventory. Budget is shared with your SmartAds budget; no separate setup needed.</p>}
+                      </div>
+                      <Toggle on={extend} onChange={setExtend} />
+                    </div>
+                  </div>
+                </div>
+              )}
             </>
           )}
 
@@ -89,7 +105,7 @@ export function CampaignWizard() {
 
           {step === 6 && (
             <><CardHeader title="Review" />
-              <div className="divide-y divide-slate-100 text-sm">{[['Objective', obj], ['Buying mode', mode === 'smart' ? `SmartAds · target ROAS ${roas.toFixed(1)}x` : `Manual · ${bid} · ${places.length} placements`], ['Products', prod], ['Budget', money(budget)], ['Schedule', 'Oct 12 – Nov 12']].map(([a, b]) => <div key={a} className="flex justify-between py-2.5"><span className="text-slate-500">{a}</span><b>{b}</b></div>)}</div>
+              <div className="divide-y divide-slate-100 text-sm">{[['Objective', obj], ['Buying mode', mode === 'smart' ? `SmartAds · target ROAS ${roas.toFixed(1)}x${extend ? ' · extended to other networks' : ''}` : `Manual · ${bid} · ${places.length} placements`], ['Products', prod], ['Budget', money(budget)], ['Schedule', 'Oct 12 – Nov 12']].map(([a, b]) => <div key={a} className="flex justify-between py-2.5"><span className="text-slate-500">{a}</span><b>{b}</b></div>)}</div>
               <Button variant="primary" className="mt-5" onClick={() => setDone(true)}>Launch campaign</Button></>
           )}
 
@@ -121,7 +137,7 @@ export function Preview({ kind }: { kind: 'lock' | 'tv' | 'agent' }) {
     )
   if (kind === 'tv')
     return (
-      <div className="w-full max-w-md"><div className="aspect-video overflow-hidden rounded-lg border-[6px] border-slate-900 bg-gradient-to-br from-slate-800 via-indigo-900 to-slate-900 p-5 text-white shadow-xl"><div className="flex h-full items-center gap-4"><div className="text-8xl">🧥</div><div><p className="text-[10px] uppercase tracking-widest text-indigo-300">Ambient · Sponsored</p><p className="text-xl font-bold">Autumn Trail Collection</p><p className="text-xs text-indigo-200">Waterproof. Warm. Made to last.</p><p className="mt-2 inline-block rounded bg-white/15 px-2 py-1 text-[10px]">Scan QR or say “Hey Lumio, show me this jacket”</p></div></div></div><div className="mx-auto h-2 w-24 rounded-b bg-slate-700" /></div>
+      <div className="w-full max-w-md"><div className="aspect-video overflow-hidden rounded-lg border-[6px] border-slate-900 bg-gradient-to-br from-slate-800 via-indigo-900 to-slate-900 p-5 text-white shadow-xl"><div className="flex h-full items-center gap-4"><div className="text-8xl">🧥</div><div><p className="text-[10px] uppercase tracking-widest text-indigo-300">Ambient · Sponsored</p><p className="text-xl font-bold">Autumn Trail Collection</p><p className="text-xs text-indigo-200">Waterproof. Warm. Made to last.</p><p className="mt-2 inline-block rounded bg-white/15 px-2 py-1 text-[10px]">Scan QR or say “Hey Glance, show me this jacket”</p></div></div></div><div className="mx-auto h-2 w-24 rounded-b bg-slate-700" /></div>
     )
   return (
     <div className="w-72 rounded-2xl bg-white p-4 shadow-xl"><div className="mb-2 rounded-xl bg-slate-100 p-2 text-xs">warm jacket for commuting under $200</div><div className="rounded-xl border border-brand-200 p-3 text-xs"><div className="mb-1 flex justify-between"><Badge tone="violet">Sponsored</Badge><span className="text-slate-400">Fernhill</span></div><div className="flex items-center gap-3"><span className="text-3xl">🧥</span><div><p className="font-semibold text-sm">Trail Shell Jacket</p><p className="text-slate-500">$189 · ★ 4.6 · Waterproof</p></div></div></div></div>

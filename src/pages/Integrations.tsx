@@ -16,7 +16,7 @@ export function Integrations() {
 
   return (
     <>
-      <PageHeader title="Integrations" sub="Connect your catalog, reviews, pixel and attribution tools. Lumio keeps everything in sync." actions={<Button variant="primary" onClick={() => setFlow({ id: 'csv', name: 'CSV Upload' })}><UploadCloud size={15} /> Upload CSV</Button>} />
+      <PageHeader title="Integrations" sub="Connect your catalog, reviews, pixel and attribution tools. Glance keeps everything in sync." actions={<Button variant="primary" onClick={() => setFlow({ id: 'csv', name: 'CSV Upload' })}><UploadCloud size={15} /> Upload CSV</Button>} />
       <Tabs tabs={['Connectors', 'Sync status', 'Pixel', 'Attribution']} value={tab} onChange={setTab} />
 
       {tab === 'Connectors' && (
@@ -81,17 +81,17 @@ function ConnectModal({ flow, connected, onClose, onDone }: { flow: NonNullable<
 
       {kind !== 'csv' && step === 0 && (
         kind === 'sftp' ? (
-          <div className="grid gap-3 sm:grid-cols-2"><Field label="Host"><input className={inputCls} defaultValue="sftp.fernhill.com" /></Field><Field label="Port"><input className={inputCls} defaultValue="22" /></Field><Field label="Username"><input className={inputCls} defaultValue="lumio_feed" /></Field><Field label="Path"><input className={inputCls} defaultValue="/exports/catalog.csv" /></Field></div>
+          <div className="grid gap-3 sm:grid-cols-2"><Field label="Host"><input className={inputCls} defaultValue="sftp.fernhill.com" /></Field><Field label="Port"><input className={inputCls} defaultValue="22" /></Field><Field label="Username"><input className={inputCls} defaultValue="glance_feed" /></Field><Field label="Path"><input className={inputCls} defaultValue="/exports/catalog.csv" /></Field></div>
         ) : kind === 'attr' && flow.id !== 'ga4' ? (
           <Field label="API key" hint="Generated in Northbeam › Settings › API"><input className={inputCls} defaultValue="nb_live_••••••••••••" /></Field>
         ) : (
-          <div className="rounded-xl border border-slate-200 p-5 text-center"><div className="mx-auto mb-3 grid h-14 w-14 place-items-center rounded-2xl bg-slate-100 text-3xl">{flow.id === 'shopify' ? '🛍️' : '🔐'}</div><p className="font-medium text-slate-900">Authorize Lumio to access {flow.name}</p><p className="mt-1 text-sm text-slate-500">Read-only access to products, inventory, orders and collections.</p><Button variant="primary" className="mt-4" onClick={() => setStep(1)}>Continue to {flow.name}</Button></div>
+          <div className="rounded-xl border border-slate-200 p-5 text-center"><div className="mx-auto mb-3 grid h-14 w-14 place-items-center rounded-2xl bg-slate-100 text-3xl">{flow.id === 'shopify' ? '🛍️' : '🔐'}</div><p className="font-medium text-slate-900">Authorize Glance to access {flow.name}</p><p className="mt-1 text-sm text-slate-500">Read-only access to products, inventory, orders and collections.</p><Button variant="primary" className="mt-4" onClick={() => setStep(1)}>Continue to {flow.name}</Button></div>
         )
       )}
       {kind !== 'csv' && step === 1 && (
         kind === 'attr' ? (
           <div>
-            <p className="mb-3 text-sm text-slate-500">Map conversion events from {flow.name} to Lumio events.</p>
+            <p className="mb-3 text-sm text-slate-500">Map conversion events from {flow.name} to Glance events.</p>
             {[['page_view', 'Product view'], ['add_to_cart', 'Add to cart'], ['begin_checkout', 'Checkout started'], ['purchase', 'Purchase']].map(([a, b]) => <div key={a} className="mb-2 grid grid-cols-[1fr_24px_1fr_auto] items-center gap-2 text-sm"><code className="rounded bg-slate-100 px-2 py-1">{a}</code>→<span className="font-medium">{b}</span><Badge tone="green">Matched</Badge></div>)}
           </div>
         ) : (
@@ -100,7 +100,7 @@ function ConnectModal({ flow, connected, onClose, onDone }: { flow: NonNullable<
       )}
       {kind !== 'csv' && step === 2 && (
         kind === 'attr' ? (
-          <div className="grid gap-3 sm:grid-cols-2"><Field label="Click-through window"><select className={inputCls}><option>7 days</option><option>14 days</option><option>30 days</option></select></Field><Field label="View-through window"><select className={inputCls}><option>1 day</option><option>Off</option></select></Field><Field label="Source of truth"><select className={inputCls}><option>Lumio pixel</option><option>{flow.name}</option></select></Field><Field label="De-duplication"><select className={inputCls}><option>Prefer click-based</option></select></Field></div>
+          <div className="grid gap-3 sm:grid-cols-2"><Field label="Click-through window"><select className={inputCls}><option>7 days</option><option>14 days</option><option>30 days</option></select></Field><Field label="View-through window"><select className={inputCls}><option>1 day</option><option>Off</option></select></Field><Field label="Source of truth"><select className={inputCls}><option>Glance pixel</option><option>{flow.name}</option></select></Field><Field label="De-duplication"><select className={inputCls}><option>Prefer click-based</option></select></Field></div>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2"><Field label="Sync frequency"><select className={inputCls}><option>Every 6 hours</option><option>Hourly</option><option>Daily</option></select></Field><Field label="On product removed"><select className={inputCls}><option>Mark as inactive</option></select></Field></div>
         )
@@ -148,16 +148,16 @@ function PixelTab() {
   return (
     <div className="grid gap-6 lg:grid-cols-3">
       <Card className="lg:col-span-2">
-        <CardHeader title="Install the Lumio pixel" sub="Lets us attribute sales to lockscreen, TV and agent traffic." />
+        <CardHeader title="Install the Glance pixel" sub="Lets us attribute sales to lockscreen, TV and agent traffic." />
         <Tabs tabs={['Shopify app', 'Google Tag Manager', 'Manual']} value={m} onChange={setM} />
         <pre className="overflow-x-auto rounded-xl bg-slate-900 p-4 text-xs leading-relaxed text-emerald-300">{`<script>
-  !function(l,u,m,i,o){l.lumio=l.lumio||function(){(l.lumio.q=l.lumio.q||[]).push(arguments)};
-  var s=u.createElement('script');s.async=1;s.src='https://cdn.lumio.shop/px.js';u.head.appendChild(s)}(window,document);
-  lumio('init', 'PX-FH-48291');
-  lumio('track', 'page_view');
+  !function(l,u,m,i,o){l.glance=l.glance||function(){(l.glance.q=l.glance.q||[]).push(arguments)};
+  var s=u.createElement('script');s.async=1;s.src='https://cdn.glance.shop/px.js';u.head.appendChild(s)}(window,document);
+  glance('init', 'PX-FH-48291');
+  glance('track', 'page_view');
 </script>`}</pre>
         <div className="mt-3 flex gap-2"><Button size="sm"><Copy size={12} /> Copy snippet</Button><Button size="sm" variant="ghost">Email to developer</Button></div>
-        <p className="mt-4 text-sm text-slate-500">{m === 'Shopify app' ? 'Install the Lumio app from the Shopify App Store – the pixel is added automatically.' : m === 'Google Tag Manager' ? 'Create a Custom HTML tag, paste the snippet, trigger on All Pages.' : 'Paste before the closing </head> tag on every page.'}</p>
+        <p className="mt-4 text-sm text-slate-500">{m === 'Shopify app' ? 'Install the Glance app from the Shopify App Store – the pixel is added automatically.' : m === 'Google Tag Manager' ? 'Create a Custom HTML tag, paste the snippet, trigger on All Pages.' : 'Paste before the closing </head> tag on every page.'}</p>
       </Card>
       <Card>
         <CardHeader title="Pixel health" right={<Badge tone="green">● Healthy</Badge>} />
@@ -179,27 +179,27 @@ function AttributionTab({ onConnect }: { onConnect: () => void }) {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 md:grid-cols-3">
-        {[['Lumio Pixel', 'Platform first-party pixel', 'Active'], ['Google Analytics 4', 'Imported conversions · last import 06:00', 'Connected'], ['Northbeam', 'Multi-touch attribution', 'Not connected']].map(([n, d, s]) => (
+        {[['Glance Pixel', 'Platform first-party pixel', 'Active'], ['Google Analytics 4', 'Imported conversions · last import 06:00', 'Connected'], ['Northbeam', 'Multi-touch attribution', 'Not connected']].map(([n, d, s]) => (
           <Card key={n}><div className="flex items-start justify-between"><b className="text-slate-900">{n}</b><Badge tone={s === 'Not connected' ? 'slate' : 'green'}>{s}</Badge></div><p className="mt-1 text-sm text-slate-500">{d}</p>{s === 'Not connected' && <Button size="sm" variant="primary" className="mt-3" onClick={onConnect}>Connect</Button>}</Card>
         ))}
       </div>
       <div className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
-          <CardHeader title="Reconciliation" sub="Lumio-reported vs. GA4-reported · last 30 days" right={<Badge tone="amber">Gap explained</Badge>} />
-          <Table head={['Metric', 'Lumio pixel', 'GA4', 'Difference']}>
+          <CardHeader title="Reconciliation" sub="Glance-reported vs. GA4-reported · last 30 days" right={<Badge tone="amber">Gap explained</Badge>} />
+          <Table head={['Metric', 'Glance pixel', 'GA4', 'Difference']}>
             {rows.map((r) => <tr key={r[0]}><Td className="font-medium">{r[0]}</Td><Td>{r[1]}</Td><Td>{r[2]}</Td><Td className={r[3].startsWith('-') ? 'text-rose-600' : 'text-slate-600'}>{r[3]}</Td></tr>)}
           </Table>
           <div className="mt-4 space-y-2 rounded-lg bg-amber-50 p-4 text-sm text-amber-900">
             <p className="font-semibold">Why the numbers differ</p>
-            <p>• GA4 uses a last-non-direct-click model with a 30-day window; Lumio uses 7-day click + 1-day view.</p>
+            <p>• GA4 uses a last-non-direct-click model with a 30-day window; Glance uses 7-day click + 1-day view.</p>
             <p>• 4.1% of GA4 purchases come from users who first saw an ad on a TV screensaver (view-through), which GA4 cannot see.</p>
-            <p>• 1.8% duplicate purchase events were de-duplicated on the Lumio side.</p>
+            <p>• 1.8% duplicate purchase events were de-duplicated on the Glance side.</p>
           </div>
         </Card>
         <div className="space-y-6">
           <Card>
             <CardHeader title="Attribution source" sub="Applies to Analytics & Ads Reporting" />
-            {(['Lumio Pixel', 'GA4', 'Northbeam'] as const).map((a) => (
+            {(['Glance Pixel', 'GA4', 'Northbeam'] as const).map((a) => (
               <label key={a} className="mb-2 flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 p-3 text-sm"><input type="radio" checked={attribution === a} onChange={() => setAttribution(a)} className="accent-brand-600" />{a}{a === 'Northbeam' && <Badge>Not connected</Badge>}</label>
             ))}
             <div className="mt-3 space-y-2"><Toggle on label="Include view-through conversions" onChange={() => {}} /><Toggle on label="De-duplicate across sources" onChange={() => {}} /></div>

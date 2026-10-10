@@ -73,7 +73,7 @@ export function BrandPage() {
           {shown && (
             <div className="rounded-2xl bg-slate-900 p-5">
               <div className="mx-auto max-w-sm rounded-2xl bg-white p-4">
-                <p className="mb-2 text-xs font-semibold text-slate-400">LUMIO SHOPPING AGENT</p>
+                <p className="mb-2 text-xs font-semibold text-slate-400">GLANCE SHOPPING AGENT</p>
                 <div className="mb-3 rounded-xl rounded-bl-sm bg-slate-100 p-3 text-sm">{q}</div>
                 <div className="rounded-xl border border-brand-200 bg-brand-50/50 p-3 text-sm text-slate-800">Great choice for Chicago in October! The <b>Fernhill Merino Crew Sweater</b> is warm, packs light and works for client meetings. Fernhill is a B Corp that uses responsibly sourced merino.
                   <div className="mt-3 flex items-center gap-3 rounded-lg bg-white p-2 ring-1 ring-slate-200"><span className="text-3xl">👕</span><div><p className="font-medium">Merino Crew Sweater</p><p className="text-xs text-slate-500">$98 · ★ 4.7 (812) · Free shipping</p></div></div>

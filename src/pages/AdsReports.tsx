@@ -8,11 +8,10 @@ const byType = [
   { type: 'CPM', spend: 13100, impr: 3070000, clicks: 31300, conv: 650, rev: 43500 },
   { type: 'CPC', spend: 5230, impr: 870000, clicks: 38900, conv: 1172, rev: 32100 },
   { type: 'SmartAds', spend: 8420, impr: 1240000, clicks: 38200, conv: 1120, rev: 41800 },
-  { type: 'DSP', spend: 4700, impr: 2900000, clicks: 14600, conv: 305, rev: 16200 },
 ]
 const bySurface = [
   { s: 'Lockscreen', spend: 9800, rev: 36200, impr: 2100000 }, { s: 'TV Screensaver', spend: 8900, rev: 27400, impr: 2300000 },
-  { s: 'Agent Search', spend: 7050, rev: 31100, impr: 800000 }, { s: '3P Open Web', spend: 4700, rev: 16200, impr: 2900000 },
+  { s: 'Agent Search', spend: 7050, rev: 31100, impr: 800000 },
 ]
 
 export function AdsReports() {
@@ -23,7 +22,7 @@ export function AdsReports() {
   return (
     <>
       <PageHeader title="Ads Reporting" sub="Understand where spend works. Numbers shown use your chosen attribution source."
-        actions={<><select value={attribution} onChange={(e) => setAttribution(e.target.value as typeof attribution)} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"><option>Lumio Pixel</option><option>GA4</option><option>Northbeam</option></select><Button>Export</Button></>} />
+        actions={<><select value={attribution} onChange={(e) => setAttribution(e.target.value as typeof attribution)} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"><option>Glance Pixel</option><option>GA4</option><option>Northbeam</option></select><Button>Export</Button></>} />
       <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-6">
         <Kpi label="Spend" value={money(spend)} delta={9} good={false} /><Kpi label="Revenue" value={money(rev * (attribution === 'GA4' ? 1.08 : 1))} delta={14} /><Kpi label="ROAS" value={(rev / spend * (attribution === 'GA4' ? 0.92 : 1)).toFixed(2) + 'x'} delta={4} />
         <Kpi label="Impressions" value="8.08M" delta={21} /><Kpi label="CTR" value="1.4%" delta={0.2} /><Kpi label="CPA" value="$9.90" delta={-6} good={false} />
@@ -34,7 +33,7 @@ export function AdsReports() {
         <div className="space-y-6">
           <Card pad={false}><div className="p-5 pb-0"><CardHeader title="Performance by buying type" /></div>
             <Table head={['Type', 'Spend', 'Impressions', 'Clicks', 'CTR', 'CPC', 'Conversions', 'Revenue', 'ROAS']}>
-              {byType.map((r) => <tr key={r.type}><Td><Badge tone={r.type === 'SmartAds' ? 'violet' : r.type === 'DSP' ? 'pink' : 'blue'}>{r.type}</Badge></Td><Td>{money(r.spend)}</Td><Td>{num(r.impr)}</Td><Td>{num(r.clicks)}</Td><Td>{((r.clicks / r.impr) * 100).toFixed(2)}%</Td><Td>${(r.spend / r.clicks).toFixed(2)}</Td><Td>{r.conv}</Td><Td>{money(r.rev)}</Td><Td className="font-semibold">{(r.rev / r.spend).toFixed(1)}x</Td></tr>)}
+              {byType.map((r) => <tr key={r.type}><Td><Badge tone={r.type === 'SmartAds' ? 'violet' : 'blue'}>{r.type}</Badge></Td><Td>{money(r.spend)}</Td><Td>{num(r.impr)}</Td><Td>{num(r.clicks)}</Td><Td>{((r.clicks / r.impr) * 100).toFixed(2)}%</Td><Td>${(r.spend / r.clicks).toFixed(2)}</Td><Td>{r.conv}</Td><Td>{money(r.rev)}</Td><Td className="font-semibold">{(r.rev / r.spend).toFixed(1)}x</Td></tr>)}
             </Table></Card>
           <div className="grid gap-6 lg:grid-cols-2">
             <Card><CardHeader title="ROAS by buying type" /><div className="h-64"><ResponsiveContainer><BarChart data={byType.map((r) => ({ n: r.type, roas: +(r.rev / r.spend).toFixed(2) }))}><CartesianGrid vertical={false} strokeDasharray="3 3" /><XAxis dataKey="n" /><YAxis /><Tooltip /><Bar dataKey="roas" radius={6}>{byType.map((_, i) => <Cell key={i} fill={CHART_COLORS[i]} />)}</Bar></BarChart></ResponsiveContainer></div></Card>
@@ -64,12 +63,12 @@ export function AdsReports() {
           <div className="space-y-4">{[['📺 TV screensaver', '📱 Mobile lockscreen', '💻 Laptop purchase', '18%'], ['📱 Mobile lockscreen', '💬 Agent chat', '📱 Mobile purchase', '31%'], ['📺 TV screensaver', '💬 Agent chat', '📱 Mobile purchase', '12%'], ['📱 Mobile lockscreen', '💻 Laptop purchase', '', '9%']].map((p, i) => (
             <div key={i} className="flex items-center gap-3">{p.slice(0, 3).filter(Boolean).map((s, j, a) => <span key={j} className="flex items-center gap-3"><span className="rounded-lg bg-slate-100 px-3 py-2 text-sm">{s}</span>{j < a.length - 1 && <span className="text-slate-300">→</span>}</span>)}<Badge tone="violet">{p[3]} of conversions</Badge></div>
           ))}</div>
-          <div className="mt-5 rounded-lg bg-amber-50 p-3 text-sm text-amber-900">💡 Last-click models undercount TV by ≈ 3.2× because the purchase happens on another device. Lumio credits the first touch in the sequence.</div></Card>
+          <div className="mt-5 rounded-lg bg-amber-50 p-3 text-sm text-amber-900">💡 Last-click models undercount TV by ≈ 3.2× because the purchase happens on another device. Glance credits the first touch in the sequence.</div></Card>
       )}
 
       {tab === 'SmartAds insights' && (
         <div className="grid gap-6 lg:grid-cols-2">
-          <Card><CardHeader title="Where SmartAds spent your budget" /><div className="space-y-3">{[['Lockscreen – mornings', 41], ['Agent search – evenings', 27], ['TV – weekend afternoons', 19], ['3P retargeting', 13]].map(([a, b]) => <div key={a as string}><div className="flex justify-between text-sm"><span>{a}</span><b>{b}%</b></div><div className="h-2 rounded-full bg-slate-100"><div className="h-2 rounded-full bg-brand-600" style={{ width: `${(b as number) * 2}%` }} /></div></div>)}</div></Card>
+          <Card><CardHeader title="Where SmartAds spent your budget" /><div className="space-y-3">{[['Lockscreen – mornings', 41], ['Agent search – evenings', 27], ['TV – weekend afternoons', 19], ['Extended networks (audience extension)', 13]].map(([a, b]) => <div key={a as string}><div className="flex justify-between text-sm"><span>{a}</span><b>{b}%</b></div><div className="h-2 rounded-full bg-slate-100"><div className="h-2 rounded-full bg-brand-600" style={{ width: `${(b as number) * 2}%` }} /></div></div>)}</div></Card>
           <Card><CardHeader title="Why" /><ul className="space-y-2 text-sm text-slate-700"><li>• Lockscreen mornings convert 2.1× better for commuting products.</li><li>• Agent search peaks with high-intent “under $X” queries after 7 pm.</li><li>• Shifted 18% of TV budget away from late night, saving $1.1K.</li><li>• Target ROAS 3.5x · currently <b>3.7x</b></li></ul></Card>
         </div>
       )}

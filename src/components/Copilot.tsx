@@ -340,7 +340,7 @@ export function Copilot({ onClose, full }: { onClose?: () => void; full?: boolea
   return (
     <aside className="anim-slide flex w-[420px] shrink-0 flex-col border-l border-slate-200 bg-white">
       <div className="flex items-center justify-between px-4 py-3">
-        <div className="flex items-center gap-2"><div className="grid h-7 w-7 place-items-center rounded-lg bg-gradient-to-br from-brand-600 to-pink-500 text-white"><Sparkles size={14} /></div><b className="text-sm text-slate-900">Lumio Copilot</b></div>
+        <div className="flex items-center gap-2"><div className="grid h-7 w-7 place-items-center rounded-lg bg-gradient-to-br from-brand-600 to-pink-500 text-white"><Sparkles size={14} /></div><b className="text-sm text-slate-900">Glance Copilot</b></div>
         <div className="flex gap-1"><Link to="/copilot" className="rounded p-1.5 text-slate-400 hover:bg-slate-100"><Maximize2 size={15} /></Link><button onClick={onClose} className="rounded p-1.5 text-slate-400 hover:bg-slate-100"><X size={16} /></button></div>
       </div>
       {body}

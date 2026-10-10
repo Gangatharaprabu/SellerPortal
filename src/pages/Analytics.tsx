@@ -10,7 +10,7 @@ export function AnalyticsPage() {
   const maxF = funnel[0].value
   return (
     <>
-      <PageHeader title="Analytics" sub={`Organic performance across Lumio surfaces · Attribution source: ${attribution}`}
+      <PageHeader title="Analytics" sub={`Organic performance across Glance surfaces · Attribution source: ${attribution}`}
         actions={<><select className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"><option>Last 30 days</option><option>Last 7 days</option><option>Last 90 days</option></select><Button onClick={() => openCopilot('Which products lose to competitors on price?')}>Explain this page</Button></>} />
       <Tabs tabs={['Overview', 'Surfaces & devices', 'Agent funnel', 'Products', 'Competitive']} value={tab} onChange={setTab} />
 

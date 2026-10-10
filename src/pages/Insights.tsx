@@ -12,7 +12,7 @@ export function InsightsPage() {
   const { openCopilot } = useApp()
   return (
     <>
-      <PageHeader title="Market Insights" sub="What shoppers are asking their agents across Lumio. Anonymised and aggregated." actions={<Button variant="primary" onClick={() => openCopilot('What are shoppers asking for in outerwear?')}><Sparkles size={15} /> Ask about trends</Button>} />
+      <PageHeader title="Market Insights" sub="What shoppers are asking their agents across Glance. Anonymised and aggregated." actions={<Button variant="primary" onClick={() => openCopilot('What are shoppers asking for in outerwear?')}><Sparkles size={15} /> Ask about trends</Button>} />
       <Tabs tabs={['Trending intents', 'How shoppers ask', 'Category demand', 'Unmet demand']} value={tab} onChange={setTab} />
 
       {tab === 'Trending intents' && (

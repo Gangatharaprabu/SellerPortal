@@ -6,7 +6,7 @@ import { threads as seed } from '../data'
 type Thread = (typeof seed)[number]
 const msgsFor = (t: Thread) => [
   { from: 'you', name: 'Alex (you)', text: t.subject.includes('Shopify') ? 'Our morning sync failed. 41 products didn’t update. Can you check?' : 'Hi team, could you help with this?', time: '2h ago' },
-  { from: 'ai', name: 'Lumio Copilot', text: 'I checked the logs: 41 variants have “$” in the price field. I attached the error report and handed this to Integrations with full context.', time: '2h ago' },
+  { from: 'ai', name: 'Glance Copilot', text: 'I checked the logs: 41 variants have “$” in the price field. I attached the error report and handed this to Integrations with full context.', time: '2h ago' },
   { from: 'agent', name: t.assignee, text: 'Thanks Alex, confirmed. The Shopify connector will strip currency symbols from the next release. For now I have re-run the sync with a mapping rule. Can you confirm the prices look right?', time: '12m ago' },
 ]
 
@@ -71,12 +71,12 @@ export function SupportPage() {
       )}
 
       {tab === 'Help articles' && (
-        <div className="grid gap-4 md:grid-cols-3">{[['Getting started with Shopify sync', 'Integrations'], ['Fixing feed errors', 'Catalog'], ['SmartAds explained', 'Ads'], ['Install the Lumio pixel', 'Measurement'], ['Connecting GA4 or Northbeam', 'Measurement'], ['Understanding Catalog Quality Score', 'Catalog']].map(([a, b]) => <Card key={a}><Badge>{b}</Badge><p className="mt-2 font-semibold text-slate-900">{a}</p><p className="mt-1 text-sm text-slate-500">5 min read</p></Card>)}</div>
+        <div className="grid gap-4 md:grid-cols-3">{[['Getting started with Shopify sync', 'Integrations'], ['Fixing feed errors', 'Catalog'], ['SmartAds explained', 'Ads'], ['Install the Glance pixel', 'Measurement'], ['Connecting GA4 or Northbeam', 'Measurement'], ['Understanding Catalog Quality Score', 'Catalog']].map(([a, b]) => <Card key={a}><Badge>{b}</Badge><p className="mt-2 font-semibold text-slate-900">{a}</p><p className="mt-1 text-sm text-slate-500">5 min read</p></Card>)}</div>
       )}
 
       {tab.startsWith('Support team') && (
         <Card pad={false}>
-          <div className="border-b border-slate-100 p-4 text-sm text-slate-500">Internal queue view for the Lumio support team. Each ticket shows merchant context automatically.</div>
+          <div className="border-b border-slate-100 p-4 text-sm text-slate-500">Internal queue view for the Glance support team. Each ticket shows merchant context automatically.</div>
           <Table head={['Ticket', 'Merchant', 'Subject', 'Priority', 'SLA', 'Merchant context', 'Assignee']}>
             {[['T-2041', 'Fernhill Apparel', 'Shopify sync failed (41 errors)', 'High', '2h left', 'Growth plan · 1,284 SKUs · $32K/mo spend', 'Priya'], ['T-2040', 'Oak & Ember', 'Pixel not firing on checkout', 'High', '3h left', 'Starter · 210 SKUs', 'Lee'], ['T-2037', 'Fernhill Apparel', 'Invoice mismatch', 'Medium', '1d left', 'Growth plan', 'Marco'], ['T-2036', 'Brightside Kids', 'Request custom integration', 'Low', '2d left', 'Enterprise', 'Dana']].map((r) => <tr key={r[0]} className="hover:bg-slate-50">{r.map((c, i) => <Td key={i}>{i === 3 ? <Badge tone={c === 'High' ? 'red' : 'slate'}>{c}</Badge> : c}</Td>)}</tr>)}
           </Table>

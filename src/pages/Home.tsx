@@ -13,7 +13,7 @@ export function HomePage() {
   const orders = daily.reduce((a, d) => a + d.orders, 0)
   return (
     <>
-      <PageHeader title="Good morning, Alex 👋" sub="Here is how Fernhill Apparel is performing on the Lumio shopping platform." actions={<Button variant="primary" onClick={() => openCopilot()}><Sparkles size={15} /> Ask Copilot</Button>} />
+      <PageHeader title="Good morning, Alex 👋" sub="Here is how Fernhill Apparel is performing on the Glance shopping platform." actions={<Button variant="primary" onClick={() => openCopilot()}><Sparkles size={15} /> Ask Copilot</Button>} />
       <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-5">
         <Kpi label="Revenue (GMV)" value={money(gmv)} delta={18.4} />
         <Kpi label="Orders" value={orders.toLocaleString()} delta={12.1} />

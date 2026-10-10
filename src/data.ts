@@ -116,7 +116,6 @@ export const campaigns = [
   { id: 2, name: 'TV Ambient – Outerwear Launch', type: 'CPM', surfaces: 'TV Screensaver', status: 'Active', spend: 6100, budget: 9000, impr: 1420000, clicks: 11400, orders: 240, rev: 18900, goal: 'Launch' },
   { id: 3, name: 'Lockscreen – Clearance Tees', type: 'CPC', surfaces: 'Lockscreen', status: 'Active', spend: 3950, budget: 5000, impr: 690000, clicks: 29800, orders: 910, rev: 22300, goal: 'Clearance' },
   { id: 4, name: 'Agent Search – Footwear', type: 'CPC', surfaces: 'Agent Search', status: 'Learning', spend: 1280, budget: 4000, impr: 180000, clicks: 9100, orders: 262, rev: 9800, goal: 'Sales' },
-  { id: 5, name: 'Visitors Retargeting (3P DSP)', type: 'DSP', surfaces: '3P Open Web', status: 'Active', spend: 4700, budget: 6000, impr: 2900000, clicks: 14600, orders: 305, rev: 16200, goal: 'Retargeting' },
   { id: 6, name: 'Summer Sale – Dresses', type: 'CPM', surfaces: 'Lockscreen + TV', status: 'Ended', spend: 7000, budget: 7000, impr: 1650000, clicks: 19900, orders: 410, rev: 24600, goal: 'Sales' },
 ]
 

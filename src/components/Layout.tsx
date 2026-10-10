@@ -44,9 +44,9 @@ export function Layout() {
     <div className="flex h-screen overflow-hidden">
       <aside className="flex w-60 shrink-0 flex-col bg-brand-900 text-indigo-100">
         <div className="flex items-center gap-2 px-5 py-5">
-          <div className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-brand-500 to-pink-500 font-bold text-white">L</div>
+          <div className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-brand-500 to-pink-500 font-bold text-white">G</div>
           <div>
-            <p className="text-sm font-bold leading-none text-white">Lumio</p>
+            <p className="text-sm font-bold leading-none text-white">Glance</p>
             <p className="mt-0.5 text-[10px] uppercase tracking-widest text-indigo-300">Seller Portal</p>
           </div>
         </div>
