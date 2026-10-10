@@ -1,7 +1,7 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import {
   Home, Plug, Package, Palette, BarChart3, Lightbulb, Megaphone, LineChart, Bot, LifeBuoy, Smartphone, Settings,
-  Bell, Sparkles, ChevronDown, Search, HelpCircle, Rocket,
+  Bell, Radar, Sparkles, ChevronDown, Search, HelpCircle, Rocket,
 } from 'lucide-react'
 import { useState } from 'react'
 import { useApp } from '../store'
@@ -21,6 +21,7 @@ const nav = [
   ] },
   { group: 'Performance', items: [
     { to: '/analytics', label: 'Analytics', icon: BarChart3 },
+    { to: '/geo', label: 'AEO / GEO', icon: Radar, badge: 'New' },
     { to: '/insights', label: 'Market Insights', icon: Lightbulb },
   ] },
   { group: 'Advertising', items: [

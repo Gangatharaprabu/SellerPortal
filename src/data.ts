@@ -83,6 +83,7 @@ export const connectors = [
   { id: 'woo', cat: 'Storefront', name: 'WooCommerce', desc: 'Sync from your WordPress store.', status: 'Available', logo: '🧩' },
   { id: 'bigc', cat: 'Storefront', name: 'BigCommerce', desc: 'Catalog and inventory sync.', status: 'Available', logo: '🏬' },
   { id: 'sfcc', cat: 'Storefront', name: 'Salesforce Commerce', desc: 'Enterprise catalog sync.', status: 'Available', logo: '☁️' },
+  { id: 'magento', cat: 'Storefront', name: 'Adobe Commerce (Magento)', desc: 'Catalog sync and write-back of optimized content.', status: 'Available', logo: '🧱' },
   { id: 'feedonomics', cat: 'Feed management', name: 'Feedonomics', desc: 'Pull optimized feeds you already maintain.', status: 'Available', logo: '🔁' },
   { id: 'productsup', cat: 'Feed management', name: 'Productsup', desc: 'Use your Productsup export channel.', status: 'Available', logo: '📦' },
   { id: 'channable', cat: 'Feed management', name: 'Channable', desc: 'Feed rules and exports.', status: 'Available', logo: '📡' },
@@ -100,6 +101,19 @@ export const connectors = [
   { id: 'adjust', cat: 'Attribution & analytics', name: 'Adjust', desc: 'Mobile measurement partner.', status: 'Available', logo: '🎯' },
   { id: 'branch', cat: 'Attribution & analytics', name: 'Branch', desc: 'Deep linking and attribution.', status: 'Available', logo: '🌿' },
   { id: 'adobe', cat: 'Attribution & analytics', name: 'Adobe Analytics', desc: 'Enterprise web analytics.', status: 'Available', logo: '🅰️' },
+  { id: 'gmc', cat: 'Search & AI engines', name: 'Google Merchant Center', desc: 'Feed status, disapprovals and Shopping / AI Overviews eligibility.', status: 'Connected', logo: '🛒' },
+  { id: 'gsc', cat: 'Search & AI engines', name: 'Google Search Console', desc: 'Indexing, sitemaps and search queries for AI Overviews.', status: 'Connected', logo: '🔎' },
+  { id: 'bing', cat: 'Search & AI engines', name: 'Bing Webmaster & Microsoft Merchant Center', desc: 'Indexing and product feeds that power Copilot answers.', status: 'Available', logo: '🔷' },
+  { id: 'oaifeed', cat: 'Search & AI engines', name: 'ChatGPT product feed', desc: 'Publish a product feed in the OpenAI agentic commerce format.', status: 'Available', logo: '💠' },
+  { id: 'pplx', cat: 'Search & AI engines', name: 'Perplexity Merchant Program', desc: 'Share your catalog so Perplexity can show and cite your products.', status: 'Available', logo: '🧠' },
+  { id: 'cloudflare', cat: 'Site, CMS & logs', name: 'Cloudflare (bot logs)', desc: 'See which AI crawlers visit your pages and where they hit errors.', status: 'Available', logo: '🛡️' },
+  { id: 'cloudfront', cat: 'Site, CMS & logs', name: 'AWS CloudFront logs', desc: 'Import CDN logs for AI crawler analysis.', status: 'Available', logo: '📜' },
+  { id: 'contentful', cat: 'Site, CMS & logs', name: 'Contentful', desc: 'Publish FAQs, guides and comparison pages to headless CMS.', status: 'Available', logo: '📝' },
+  { id: 'sanity', cat: 'Site, CMS & logs', name: 'Sanity', desc: 'Headless CMS publishing for answer-ready content.', status: 'Available', logo: '✍️' },
+  { id: 'wordpress', cat: 'Site, CMS & logs', name: 'WordPress', desc: 'Publish buying guides and structured data to your blog.', status: 'Available', logo: '📰' },
+  { id: 'gbp', cat: 'Brand profiles', name: 'Google Business Profile', desc: 'Keep brand and store details consistent across the web.', status: 'Available', logo: '📍' },
+  { id: 'linkedin', cat: 'Brand profiles', name: 'LinkedIn Page', desc: 'Entity consistency for company information.', status: 'Available', logo: '💼' },
+  { id: 'wikidata', cat: 'Brand profiles', name: 'Wikidata / Knowledge graph', desc: 'Check how your brand entity is described in public knowledge graphs.', status: 'Available', logo: '🕸️' },
 ]
 
 export const syncHistory = [
@@ -146,6 +160,7 @@ export const nextActions = [
   { id: 'a1', icon: 'catalog', title: '214 products are missing material, fit or occasion data', impact: '+18% estimated agent match rate', action: 'Fix with Catalog Fixer', agent: 'Catalog Fixer' },
   { id: 'a2', icon: 'trend', title: 'Rising intent: “fall wedding guest outfit under $150”', impact: '18.4K searches/wk · you rank for 6%', action: 'Respond with Trend Responder', agent: 'Trend Responder' },
   { id: 'a3', icon: 'ads', title: 'TV campaign is pacing 22% under budget', impact: '+$6.2K revenue if budget is fully delivered', action: 'Optimize with Campaign Optimizer', agent: 'Campaign Optimizer' },
+  { id: 'a5', icon: 'geo', title: 'ChatGPT mentions you in 14% of “best outerwear” prompts; a competitor gets 31%', impact: '+9% AI-referred revenue · 3 fixes ready', action: 'Optimize with GEO Optimizer', agent: 'GEO Optimizer' },
   { id: 'a4', icon: 'brand', title: 'Brand profile is 40% complete', impact: 'Agents cite brand story in 1 of 4 recommendations', action: 'Build with Brand Profile Builder', agent: 'Brand Profile Builder' },
 ]
 
@@ -155,6 +170,7 @@ export const agents = [
   { id: 'brand', name: 'Brand Profile Builder', desc: 'Drafts your brand profile from your site, socials and assets.', emoji: '🏷️', runs: 2, status: 'Ready' },
   { id: 'size', name: 'Size Chart & Specs Agent', desc: 'Extracts size charts and specs from PDFs and images.', emoji: '📐', runs: 3, status: 'Ready' },
   { id: 'campaign', name: 'Campaign Optimizer', desc: 'Shifts budget and bids; builds campaigns from a goal.', emoji: '📈', runs: 9, status: 'Ready' },
+  { id: 'geo', name: 'GEO Optimizer', desc: 'Improves how ChatGPT, Perplexity, Gemini and others understand and cite your products.', emoji: '🌐', runs: 0, status: 'New' },
   { id: 'trend', name: 'Trend Responder', desc: 'Matches emerging intents to catalog gaps and suggests promotions.', emoji: '🔥', runs: 4, status: 'Ready' },
 ]
 

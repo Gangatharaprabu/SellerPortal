@@ -4,12 +4,14 @@ import { Sparkles, Send, X, Plus, Maximize2, MessageSquare, LifeBuoy, Check, Loa
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { useApp } from '../store'
 import { daily, lostReasons, threads, trends } from '../data'
+import { engines } from '../geoData'
 import { Badge, Button, Progress, cx } from './ui'
 
 type Block =
   | { k: 'text'; t: string }
   | { k: 'score' }
   | { k: 'roas' }
+  | { k: 'geo' }
   | { k: 'trends' }
   | { k: 'lost' }
   | { k: 'agent'; agent: string }
@@ -26,10 +28,16 @@ const suggested = [
   'Which products lose to competitors on price?',
   'Draft my brand profile',
   'My Shopify sync failed – help',
+  'How visible am I in ChatGPT and Perplexity?',
 ]
 
 function respond(q: string): Block[] {
   const s = q.toLowerCase()
+  if (s.includes('geo optimizer') || s.includes('fix with geo')) return [{ k: 'agent', agent: 'GEO Optimizer' }]
+  if (s.includes('visible') || s.includes('chatgpt') || s.includes('perplexity') || s.includes('aeo') || s.includes('geo '))
+    return [{ k: 'text', t: 'Your **AI visibility score is 62/100**. You are mentioned in **14%** of tracked prompts on ChatGPT and **22%** on Perplexity, versus **31%** in the Glance Agent. Gaps by engine:' }, { k: 'geo' },
+      { k: 'text', t: 'Three things hold you back: PerplexityBot is blocked in robots.txt, 214 products lack use-case attributes, and ChatGPT quotes an outdated 14-day return policy. AI-referred traffic is already worth **$48K** per month, so these fixes matter.' }, { k: 'chips', items: ['Run GEO Optimizer', 'Show AI traffic'] }]
+  if (s.includes('ai traffic')) return [{ k: 'text', t: 'AI engines sent **18.4K sessions and 612 orders ($48.2K)** in the last 30 days, tracked end to end by the Glance pixel. ChatGPT is the biggest source; Perplexity converts best at 3.8%. Open **AEO / GEO → Measure → AI traffic** for the full journey.' }, { k: 'chips', items: ['Run GEO Optimizer'] }]
   if (s.includes('agent-ready') || s.includes('catalog readiness') || s.includes('how agent'))
     return [{ k: 'text', t: 'Your catalog agent-readiness score is **54/100**. Agents skip products when key attributes are missing, so this is currently your biggest growth lever.' }, { k: 'score' },
       { k: 'text', t: '214 products are missing material, fit or occasion data. I can fix these for you. You will review every change before it goes live.' }, { k: 'chips', items: ['Run Catalog Fixer', 'Show products missing data'] }]
@@ -88,6 +96,18 @@ const agentSpecs: Record<string, { scope: string; plan: string[]; steps: string[
     ],
     result: 'Profile 40% → 92% complete (draft)',
   },
+  'GEO Optimizer': {
+    scope: '214 products · schema on 73 pages · robots.txt · 3 content drafts',
+    plan: ['Add use-case, audience and comparison-ready attributes to 214 products', 'Correct stale Offer prices in structured data on 73 pages', 'Allow PerplexityBot and Google-Extended in robots.txt', 'Draft a “Merino vs cotton” guide and 5 FAQ blocks for your approval', 'Stage everything. Publishing to your store is a separate step.'],
+    steps: ['Checking how AI engines describe you…', 'Generating attributes…', 'Repairing structured data…', 'Drafting answer-first content…', 'Building change set…'],
+    diff: [
+      { item: 'Merino Crew Sweater', field: 'Use case', before: '—', after: 'Travel, commute, layering in 40–60°F' },
+      { item: 'Trail Shell Jacket', field: 'Offer price (JSON-LD)', before: '$159', after: '$189' },
+      { item: 'robots.txt', field: 'PerplexityBot', before: 'Disallow: /', after: 'Allow: /' },
+      { item: 'Guide: Merino vs cotton', field: 'New page', before: '—', after: 'Draft ready for approval (640 words)' },
+    ],
+    result: 'GEO-readiness 62 → 74 · estimated +9% AI-referred revenue',
+  },
   'Campaign Optimizer': {
     scope: '3 active campaigns · budget and bids',
     plan: ['Analyze 14 days of pacing and ROAS by placement', 'Shift $2,400 from low-intent TV evening slots to Lockscreen mornings', 'Lower CPC bids on 6 low-converting SKUs', 'Requires approval: budget changes'],
@@ -110,7 +130,7 @@ const agentSpecs: Record<string, { scope: string; plan: string[]; steps: string[
 
 export function AgentFlow({ agent, onDone }: { agent: string; onDone?: () => void }) {
   const spec = agentSpecs[agent] ?? agentSpecs['Catalog Fixer']
-  const { setCatalogScore } = useApp()
+  const { setCatalogScore, addUnpublished } = useApp()
   const [phase, setPhase] = useState<'plan' | 'run' | 'review' | 'applied'>('plan')
   const [step, setStep] = useState(0)
   const [rejected, setRejected] = useState<number[]>([])
@@ -124,7 +144,8 @@ export function AgentFlow({ agent, onDone }: { agent: string; onDone?: () => voi
 
   const apply = () => {
     setPhase('applied')
-    if (agent === 'Catalog Fixer') setCatalogScore(78)
+    if (agent === 'Catalog Fixer') { setCatalogScore(78); addUnpublished(214) }
+    if (agent === 'GEO Optimizer') addUnpublished(140)
     onDone?.()
   }
 
@@ -171,7 +192,7 @@ export function AgentFlow({ agent, onDone }: { agent: string; onDone?: () => voi
             {phase === 'review' ? (
               <div className="flex gap-2"><Button variant="primary" size="sm" onClick={apply}>Apply {spec.diff.length - rejected.length} of {spec.diff.length} shown + all others</Button><Button size="sm">Review all</Button></div>
             ) : (
-              <div className="rounded-lg bg-emerald-50 p-2 text-xs font-medium text-emerald-700">✅ {spec.result}</div>
+              <div className="space-y-2"><div className="rounded-lg bg-emerald-50 p-2 text-xs font-medium text-emerald-700">✅ {spec.result}</div>{(agent === 'Catalog Fixer' || agent === 'GEO Optimizer') && <Link to="/catalog" className="block rounded-lg bg-brand-50 p-2 text-xs font-medium text-brand-700">Next: publish these changes back to your store →</Link>}</div>
             )}
           </>
         )}
@@ -223,6 +244,12 @@ function BlockView({ b, onChip, onTicket }: { b: Block; onChip: (s: string) => v
             <Bar dataKey="pct" fill="#6366f1" radius={4} /></BarChart></ResponsiveContainer>
         </div>
       )
+    case 'geo':
+      return (
+        <div className="h-44 rounded-xl border border-slate-200 p-2">
+          <ResponsiveContainer><BarChart data={engines} layout="vertical" margin={{ left: 10 }}><XAxis type="number" hide /><YAxis type="category" dataKey="name" width={110} tick={{ fontSize: 10 }} /><Tooltip /><Bar dataKey="mention" name="Mention rate %" fill="#6366f1" radius={4} /></BarChart></ResponsiveContainer>
+        </div>
+      )
     case 'agent': return <AgentFlow agent={b.agent} />
     case 'campaign':
       return (
@@ -249,7 +276,7 @@ function BlockView({ b, onChip, onTicket }: { b: Block; onChip: (s: string) => v
 
 const pageContext: Record<string, string> = {
   '/': 'Home', '/catalog': 'Catalog', '/integrations': 'Integrations', '/ads': 'Ads Manager', '/ads/reports': 'Ads Reporting',
-  '/analytics': 'Analytics', '/insights': 'Market Insights', '/brand': 'Brand Studio', '/support': 'Support Center', '/agents': 'Agents',
+  '/analytics': 'Analytics', '/geo': 'AEO / GEO', '/insights': 'Market Insights', '/brand': 'Brand Studio', '/support': 'Support Center', '/agents': 'Agents',
 }
 
 export function Copilot({ onClose, full }: { onClose?: () => void; full?: boolean }) {

@@ -3,6 +3,7 @@ import { Sparkles, Star, X, Wand2, Check } from 'lucide-react'
 import { Badge, Button, Card, CardHeader, Field, PageHeader, Progress, Table, Tabs, Td, cx, inputCls, money, num } from '../components/ui'
 import { Product, products } from '../data'
 import { useApp } from '../store'
+import { PublishToSource } from '../components/PublishToSource'
 
 export function CatalogPage() {
   const { catalogScore, openCopilot } = useApp()
@@ -25,6 +26,7 @@ export function CatalogPage() {
           <Card key={a} className="!p-4"><p className="text-xs font-medium text-slate-500">{a}</p><p className="mt-1 text-3xl font-bold text-slate-900">{b}</p><Badge tone={t as 'green'}>{a === 'Live' ? 'Eligible for agents' : a === 'Needs attention' ? 'Reduced visibility' : 'Not shown'}</Badge></Card>
         ))}
       </div>
+      <div className="mb-6"><PublishToSource /></div>
       <Tabs tabs={['Products', 'Quality fixes', 'Reviews', 'Size charts & specs']} value={tab} onChange={setTab} />
 
       {tab === 'Products' && (

@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import { Package, TrendingUp, Megaphone, Palette, ArrowRight, Sparkles } from 'lucide-react'
+import { Package, TrendingUp, Megaphone, Palette, ArrowRight, Sparkles, Globe } from 'lucide-react'
 import { Badge, Button, Card, CardHeader, Kpi, PageHeader, Progress, money } from '../components/ui'
 import { campaigns, daily, nextActions, trends } from '../data'
 import { useApp } from '../store'
 
-const icons = { catalog: Package, trend: TrendingUp, ads: Megaphone, brand: Palette }
+const icons = { catalog: Package, trend: TrendingUp, ads: Megaphone, brand: Palette, geo: Globe }
 
 export function HomePage() {
   const { openCopilot, catalogScore } = useApp()

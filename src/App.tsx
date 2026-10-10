@@ -14,6 +14,7 @@ import { AgentsPage } from './pages/Agents'
 import { SupportPage } from './pages/Support'
 import { Simulator } from './pages/Simulator'
 import { SettingsPage } from './pages/Settings'
+import { GeoPage } from './pages/Geo'
 import { CopilotPage } from './pages/CopilotPage'
 
 export function App() {
@@ -27,6 +28,7 @@ export function App() {
         <Route path="catalog" element={<CatalogPage />} />
         <Route path="brand" element={<BrandPage />} />
         <Route path="analytics" element={<AnalyticsPage />} />
+        <Route path="geo" element={<GeoPage />} />
         <Route path="insights" element={<InsightsPage />} />
         <Route path="ads" element={<AdsPage />} />
         <Route path="ads/new" element={<CampaignWizard />} />

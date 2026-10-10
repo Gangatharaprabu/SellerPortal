@@ -4,7 +4,15 @@ import { Badge, Button, Card, CardHeader, Field, Modal, PageHeader, Table, Tabs,
 import { connectors, syncHistory } from '../data'
 import { useApp } from '../store'
 
-const cats = ['All', 'Storefront', 'Feed management', 'File transfer', 'Reviews', 'Attribution & analytics']
+const cats = ['All', 'Storefront', 'Feed management', 'File transfer', 'Reviews', 'Attribution & analytics', 'Search & AI engines', 'Site, CMS & logs', 'Brand profiles']
+
+const dataOptions: Record<string, string[]> = {
+  store: ['Products & variants', 'Inventory levels', 'Collections', 'Images & media', 'Orders (for attribution)', 'Write-back of optimized content (optional)'],
+  search: ['Product feed & item status', 'Disapprovals & diagnostics', 'Performance & query reports', 'Eligibility for AI answers & shopping surfaces'],
+  logs: ['Bot & crawler requests', 'HTTP status codes & errors', 'User-agent classification (GPTBot, PerplexityBot, …)', 'Top crawled URLs'],
+  cms: ['Pages & content models', 'Structured data fields', 'Publish access for FAQs, guides and comparison pages'],
+  profile: ['Business name, address, links', 'Categories & descriptions', 'Consistency checks against your Glance brand profile'],
+}
 
 type Flow = null | { id: string; name: string }
 
@@ -59,7 +67,7 @@ export function Integrations() {
 
 function ConnectModal({ flow, connected, onClose, onDone }: { flow: NonNullable<Flow>; connected: boolean; onClose: () => void; onDone: () => void }) {
   const [step, setStep] = useState(connected ? 3 : 0)
-  const kind = flow.id === 'csv' ? 'csv' : flow.id === 'sftp' ? 'sftp' : ['ga4', 'northbeam', 'triplewhale', 'rockerbox', 'appsflyer', 'adjust', 'branch', 'adobe'].includes(flow.id) ? 'attr' : ['bv', 'yotpo', 'powerreviews', 'okendo'].includes(flow.id) ? 'reviews' : 'store'
+  const kind = flow.id === 'csv' ? 'csv' : flow.id === 'sftp' ? 'sftp' : ['ga4', 'northbeam', 'triplewhale', 'rockerbox', 'appsflyer', 'adjust', 'branch', 'adobe'].includes(flow.id) ? 'attr' : ['bv', 'yotpo', 'powerreviews', 'okendo'].includes(flow.id) ? 'reviews' : ['gmc', 'gsc', 'bing', 'oaifeed', 'pplx'].includes(flow.id) ? 'search' : ['cloudflare', 'cloudfront'].includes(flow.id) ? 'logs' : ['contentful', 'sanity', 'wordpress'].includes(flow.id) ? 'cms' : ['gbp', 'linkedin', 'wikidata'].includes(flow.id) ? 'profile' : 'store'
   const labels = kind === 'csv' ? ['Upload', 'Map columns', 'Review'] : kind === 'attr' ? ['Authorize', 'Choose events', 'Attribution window', 'Done'] : ['Authorize', 'Choose data', 'Schedule', 'Done']
   const last = labels.length - 1
   return (
@@ -95,7 +103,7 @@ function ConnectModal({ flow, connected, onClose, onDone }: { flow: NonNullable<
             {[['page_view', 'Product view'], ['add_to_cart', 'Add to cart'], ['begin_checkout', 'Checkout started'], ['purchase', 'Purchase']].map(([a, b]) => <div key={a} className="mb-2 grid grid-cols-[1fr_24px_1fr_auto] items-center gap-2 text-sm"><code className="rounded bg-slate-100 px-2 py-1">{a}</code>→<span className="font-medium">{b}</span><Badge tone="green">Matched</Badge></div>)}
           </div>
         ) : (
-          <div className="space-y-2 text-sm">{['Products & variants', 'Inventory levels', 'Collections', 'Images & media', 'Orders (for attribution)'].map((x) => <label key={x} className="flex items-center gap-2 rounded-lg border border-slate-200 p-3"><input type="checkbox" defaultChecked className="accent-brand-600" />{x}</label>)}</div>
+          <div className="space-y-2 text-sm">{(dataOptions[kind] ?? dataOptions.store).map((x) => <label key={x} className="flex items-center gap-2 rounded-lg border border-slate-200 p-3"><input type="checkbox" defaultChecked className="accent-brand-600" />{x}</label>)}</div>
         )
       )}
       {kind !== 'csv' && step === 2 && (
